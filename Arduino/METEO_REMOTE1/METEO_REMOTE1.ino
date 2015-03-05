@@ -132,7 +132,7 @@ void setup()
   }
   else
   {//pulluped?
-    PrintF("\nCFG pins reading error!");
+    PrintF("\n\rCFG pins reading error!");
   }
 }//end setup
 
@@ -154,50 +154,50 @@ void loop()
                       PrintHelp();
                     break;
                     case 'a':
-                      PrintF("\nAdd next Sensor to table:");                     
+                      PrintF("\n\rAdd next Sensor to table:");                     
                       WriteSensor(SensorsCount);
                     break;
                     case 'c':
-                      PrintF("\nClear Sensors table");
+                      PrintF("\n\rClear Sensors table");
                       ClearSensors();
                     break;
                     case 'v':
-                      PrintF("\nInternal Voltage:");
+                      PrintF("\n\rInternal Voltage:");
                       PrintD(ReadVCC());
                     break;
                     case 'h':
                       if (millis()>= DHTNextRead) UpdateDHT();
-                      PrintF("\nHumidity: ");
+                      PrintF("\n\rHumidity: ");
                       PrintD(DHThum);
                     break;
                     case 'l':
-                      PrintF("\nLoad Sensors table");
+                      PrintF("\n\rLoad Sensors table");
                       LoadSensors();
                     break;
                     case 'o':
-                      PrintF("\nOneWire search:");
+                      PrintF("\n\rOneWire search:");
                       ScanOW();
                     break;
                     case 'p':
-                      PrintF("\nSensors table:");
+                      PrintF("\n\rSensors table:");
                       PrintSensors();
                     break;
                     case 'r':
-                      PrintF("\nRead sensor at index (0-9): ");
+                      PrintF("\n\rRead sensor at index (0-9): ");
                       RunMode= RM_TERMCMDr;
                     break;
                     case 'R':
                       RunMode= RM_TERMCMDR;
                     break;
                     case 's':
-                      PrintF("\nSave Sensors table");
+                      PrintF("\n\rSave Sensors table");
                       SaveSensors();
                     break;
                     case 't':
                       if (millis()>= DHTNextRead) UpdateDHT();
-                      PrintF("\nDHT Temp: ");
+                      PrintF("\n\rDHT Temp: ");
                       PrintD(DHTtemp);
-                      PrintF("\nDS Temps: ");
+                      PrintF("\n\rDS Temps: ");
                       for(byte pos= 3; pos< SensorsCount; pos++)
                       {
                         memcpy(OWaddr, Sensors[pos].mac, 8);
@@ -214,7 +214,7 @@ void loop()
                       }                      
                     break;
                     case 'w':
-                        PrintF("\nWriting sensor at index (0-9): ");
+                        PrintF("\n\rWriting sensor at index (0-9): ");
                         RunMode= RM_TERMCMDw;
                     break;
                     default:
@@ -247,7 +247,7 @@ void loop()
                   {
                     income= map(income, 48, 57, 0, 9);
                     ReadSensor(income, 0);
-                    Print("\n"); 
+                    Print("\n\r"); 
                     RunMode= RM_TERMINAL;
                   }
               break;              
@@ -348,7 +348,7 @@ for (i=1; i< 10; i++)
       }
       else
       {
-        PrintFV("\nNo:", i);
+        PrintFV("\n\rNo:", i);
         PrintF("\t");
         for(byte a=0; a<8; a++) PrintH(OWaddr[a]);
         if (OneWire::crc8(OWaddr, 7) == OWaddr[7])
@@ -366,7 +366,7 @@ for (i=1; i< 10; i++)
               }
             else
               {
-                PrintF("\nError after conversion!");
+                PrintF("\n\rError after conversion!");
                 break;
               }
             OW.select(OWaddr);
@@ -455,10 +455,10 @@ void SaveSensors()
 
 void PrintSensors()
 {
-  PrintF("\r\nNo:\tIndex:\tValue:\t\tValueHex:");
+  PrintF("\n\rNo:\tIndex:\tValue:\t\tValueHex:");
   for (byte a= 0; a < SensorsCount; a++)
       {
-        PrintF("\r\n");
+        PrintF("\n\r");
         Print(a+1);
         Print("\t");
         Print(Sensors[a].index);
@@ -534,48 +534,48 @@ void ReadSensor(byte pos, byte infos)
     {
       if (pos > 2)
         {
-          if(infos) PrintF("\nReading DS...");
+          if(infos) PrintF("\n\rReading DS...");
           memcpy(OWaddr, Sensors[pos].mac, 8);
           UpdateDS();
           if(infos) 
             {
-            PrintF("\nTemp: ");
+            PrintF("\n\rTemp: ");
             PrintD(OWtemp);
             }
           else Print(OWtemp);
         }
       else if (pos > 0)
         {
-          if(infos) PrintF("\nReading DHT...");
+          if(infos) PrintF("\n\rReading DHT...");
           if (millis() >= DHTNextRead)
             {
               UpdateDHT();
               if (DHTerror != DHT_ERROR_NONE)
               {
-              if(infos) PrintF("\nError DHT.");            
+              if(infos) PrintF("\n\rError DHT.");            
               } 
             }
            switch(pos)
             {
               case 1:
-              if(infos) {PrintF("\nHumi: ");PrintD(DHThum);}
+              if(infos) {PrintF("\n\rHumi: ");PrintD(DHThum);}
               else Print(DHThum);
               break;
               case 2:
-              if(infos) {PrintF("\nTemp: ");PrintD(DHTtemp);}
+              if(infos) {PrintF("\n\rTemp: ");PrintD(DHTtemp);}
               else Print(DHTtemp);
               break;
             }      
         }
       else
         {
-          if(infos) {PrintF("\nVolt: ");PrintD(ReadVCC());}
+          if(infos) {PrintF("\n\rVolt: ");PrintD(ReadVCC());}
           else Print(ReadVCC());
         }
     }
   else
     {
-      if(infos) PrintF("\nWrong sensor index.");      
+      if(infos) PrintF("\n\rWrong sensor index.");      
     }
 }
 
@@ -583,15 +583,15 @@ void WriteSensor(byte pos)
 {
  if ((pos < 3) || (pos >= SENSORSMAX))
    {
-     PrintF("\nWrong sensor index.");
+     PrintF("\n\rWrong sensor index.");
      return;
    }
  else if (pos > SensorsCount)
    {
-     PrintF("\nUse add sensor.");
+     PrintF("\n\rUse add sensor.");
      return;
    }
- PrintF("\nType ValueHex (16 chars):");
+ PrintF("\n\rType ValueHex (16 chars):");
  if (pos==SensorsCount) SensorsCount++;
  Sensors[pos].index= pos;
  byte tadr[8]= {0,0,0,0,0,0,0,0};
@@ -613,33 +613,33 @@ void WriteSensor(byte pos)
      PrintH(tadr[i]);
      Sensors[pos].mac[i]= tadr[i];    
    }
- PrintF("\nValue changed at pos :");
+ PrintF("\n\rValue changed at pos :");
  Print(pos);
 }
 
 void PrintHelp()
 {
-PrintF("\n\n\n\tSensors station by dMb (2015)");
-PrintF("\nCommands list:");
-PrintF("\n\t?\tprint this\
-\n\n\tp\tprint ST\
-\n\tl\tload ST from flash\
-\n\ts\tsave ST to flash\
-\n\tc\tclear ST\
-\n\n\to\tscan DS bus\
-\n\ta\tadd next sensor to ST (aHEXMACADDRESS)\
-\n\tw\twrite HEXMACADDRESS to ST (w3HEXMACADDRESS)\
-\n\n\tr\tprint sensor value (r2)\
-\n\tR\tprint sensor value only (R2)\
-\n\tv\tprint Voltage\
-\n\th\tprint Humidity\
-\n\tt\tprint all temperatures");
-PrintF("\nWhere: ST-SensorTable, DS-Maxim OneWire device, DHT-DHT22/AM2303 sensor");
-PrintF("\nHowTo:\
-\n1.Clear ST\n2.Sensors 0-2 are added by default\
-\n3.Scan DS bus (type o)\n4.Add sensor to ST (type aHEXaddres)\
-\n5.Check ST (print- type p)\
-\n6.Save table to flash (type s)\nReset then and check ST after reboot.");
+PrintF("\n\r\n\r\n\r\tSensors station by dMb (2015)");
+PrintF("\n\rCommands list:");
+PrintF("\n\r\t?\tprint this\
+\n\r\n\r\tp\tprint ST\
+\n\r\tl\tload ST from flash\
+\n\r\ts\tsave ST to flash\
+\n\r\tc\tclear ST\
+\n\r\n\r\to\tscan DS bus\
+\n\r\ta\tadd next sensor to ST (aHEXMACADDRESS)\
+\n\r\tw\twrite HEXMACADDRESS to ST (w3HEXMACADDRESS)\
+\n\r\n\r\tr\tprint sensor value (r2)\
+\n\r\tR\tprint sensor value only (R2)\
+\n\r\tv\tprint Voltage\
+\n\r\th\tprint Humidity\
+\n\r\tt\tprint all temperatures");
+PrintF("\n\rWhere: ST-SensorTable, DS-Maxim OneWire device, DHT-DHT22/AM2303 sensor");
+PrintF("\n\rHowTo:\
+\n\r1.Clear ST\n\r2.Sensors 0-2 are added by default\
+\n\r3.Scan DS bus (type o)\n\r4.Add sensor to ST (type aHEXaddres)\
+\n\r5.Check ST (print- type p)\
+\n\r6.Save table to flash (type s)\n\rReset then and check ST after reboot.");
 }
 
 
