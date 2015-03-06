@@ -42,7 +42,7 @@ void PrintHelp();
 void ScanOW();
 byte ReadVCC();
 
-#define PrintH(h)    if (h <= 0x0F) {Serial.print("0");Serial.print(h, HEX);} else {Serial.print(h, HEX);}
+#define PrintH(h)    if (h <= 0x0F) {Serial.print('0');Serial.print(h, HEX);} else {Serial.print(h, HEX);}
 #define PrintF(x)    Serial.print(F(x))
 #define PrintFV(f,v) Serial.print(F(f)); Serial.print(v)
 #define PrintFH(f,v) Serial.print(F(f)); PrintH(v, HEX)
@@ -205,7 +205,7 @@ void loop()
                         if (OWerror==OW_OK)
                           {
                             PrintD(OWtemp);
-                            Print("\t");
+                            Print('\t');
                           }
                         else
                           {
@@ -323,9 +323,9 @@ void PrintSensorData(byte data, byte sensno)
   switch(data)
     {
       case PRINTDATAV:
-        if (sensno== 0) PrintF("V");
-        else if (sensno == 1) PrintF("H");
-        else PrintF("C");
+        if (sensno== 0) Print('V');
+        else if (sensno == 1) Print('H');
+        else Print('C');
       break;
       case PRINTDATAR:
         ReadSensor(sensno, 0);
@@ -349,7 +349,7 @@ for (i=1; i< 10; i++)
       else
       {
         PrintFV("\r\nNo:", i);
-        PrintF("\t");
+        Print('\t');
         for(byte a=0; a<8; a++) PrintH(OWaddr[a]);
         if (OneWire::crc8(OWaddr, 7) == OWaddr[7])
         {
@@ -460,7 +460,7 @@ void PrintSensors()
       {
         PrintF("\r\n");
         Print(a+1);
-        Print("\t");
+        Print('\t');
         Print(Sensors[a].index);
         Print("\t\t");
         for (byte x=0; x<8; x++) PrintH(byte(Sensors[a].mac[x]));
